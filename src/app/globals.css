@@ -1,0 +1,292 @@
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+ * Learnary design tokens — minimal/Swiss premium direction.
+ *
+ * Semantic tokens are defined as runtime CSS variables that flip with the
+ * `.dark` class, then exposed to Tailwind via `@theme inline`. Components use
+ * the semantic utilities (bg-surface, text-fg, border-border) directly and get
+ * correct light/dark values without `dark:` duplication.
+ */
+
+:root {
+  /* Surfaces */
+  --bg: #fafaf9;
+  --surface: #ffffff;
+  --surface-raised: #ffffff;
+  --overlay: rgb(12 10 9 / 0.45);
+
+  /* Lines */
+  --border: #e7e5e4;
+  --border-strong: #d6d3d1;
+
+  /* Text */
+  --fg: #1c1917;
+  --fg-muted: #6f6a66;
+
+  /* Accent (terracotta brand) */
+  --accent: #c25e32;
+  --accent-strong: #b55227; /* solid fills; ≥4.5:1 with white text */
+  --accent-soft: #fdf0ea;
+  --accent-fg: #ffffff; /* text/icon color on accent-strong fills */
+
+  /* Inset/sunken surface for nested rows inside cards (consistent nesting) */
+  --surface-muted: #f5f5f4;
+
+  /* Status */
+  --success: #15803d;
+  --success-soft: #f0fdf4;
+  --success-fg: #ffffff; /* text/icon on a solid success fill */
+  --error: #dc2626;
+  --error-soft: #fef2f2;
+  --error-fg: #ffffff; /* text/icon on a solid error fill */
+  --warning: #b45309;
+  --warning-soft: #fffbeb;
+
+  /* Focus */
+  --ring: #c25e32;
+}
+
+.dark {
+  --bg: #0c0a09;
+  --surface: #1c1917;
+  --surface-raised: #262220;
+  --overlay: rgb(0 0 0 / 0.65);
+
+  --border: #312d2a;
+  --border-strong: #44403c;
+
+  --fg: #fafaf9;
+  --fg-muted: #a8a29e;
+
+  --surface-muted: #262220;
+
+  --accent: #d97144;
+  --accent-strong: #b55227;
+  --accent-soft: #2b150c;
+  --accent-fg: #ffffff;
+
+  --success: #4ade80;
+  --success-soft: #12271a;
+  --success-fg: #0c0a09; /* dark fills are light → use dark foreground */
+  --error: #f87171;
+  --error-soft: #2b1414;
+  --error-fg: #0c0a09;
+  --warning: #fbbf24;
+  --warning-soft: #2a1e08;
+
+  --ring: #d97144;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-surface-muted: var(--surface-muted);
+  --color-overlay: var(--overlay);
+
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+
+  --color-fg: var(--fg);
+  --color-fg-muted: var(--fg-muted);
+
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-fg: var(--accent-fg);
+
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-success-fg: var(--success-fg);
+  --color-error: var(--error);
+  --color-error-soft: var(--error-soft);
+  --color-error-fg: var(--error-fg);
+  --color-warning: var(--warning);
+  --color-warning-soft: var(--warning-soft);
+
+  --color-ring: var(--ring);
+
+  /* Type scale — adds the micro-text tier so text-2xs is never hand-written */
+  --text-2xs: 0.6875rem;
+  --text-2xs--line-height: 1rem;
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", sans-serif;
+}
+
+/* Base */
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-bg font-sans text-fg antialiased;
+  }
+
+  /* Visible keyboard focus everywhere, consistently */
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+}
+
+/*
+ * Markdown rendering scope for generated content (tutor replies, task
+ * assist outputs). Element styles live here so every surface renders the
+ * same; font size/color inherit from the parent (bubble, modal, card).
+ */
+.markdown > :first-child {
+  margin-top: 0;
+}
+.markdown > :last-child {
+  margin-bottom: 0;
+}
+.markdown p {
+  margin: 0.5rem 0;
+}
+.markdown h1,
+.markdown h2,
+.markdown h3,
+.markdown h4,
+.markdown h5,
+.markdown h6 {
+  margin: 0.875rem 0 0.25rem;
+  font-weight: 600;
+}
+.markdown ul {
+  margin: 0.5rem 0;
+  padding-left: 1.25rem;
+  list-style: disc;
+}
+.markdown ol {
+  margin: 0.5rem 0;
+  padding-left: 1.25rem;
+  list-style: decimal;
+}
+.markdown li {
+  margin: 0.25rem 0;
+}
+.markdown li::marker {
+  color: var(--fg-muted);
+}
+.markdown li > p {
+  margin: 0.125rem 0;
+}
+.markdown code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.85em;
+  background: var(--surface-muted);
+  border: 1px solid var(--border);
+  border-radius: 0.25rem;
+  padding: 0.1em 0.35em;
+}
+.markdown pre {
+  margin: 0.625rem 0;
+  overflow-x: auto;
+  background: var(--surface-muted);
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+}
+.markdown pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 0.8em;
+}
+.markdown blockquote {
+  margin: 0.625rem 0;
+  border-left: 2px solid var(--accent);
+  padding-left: 0.75rem;
+  color: var(--fg-muted);
+}
+.markdown a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.markdown table {
+  display: block;
+  margin: 0.625rem 0;
+  overflow-x: auto;
+  border-collapse: collapse;
+  font-size: 0.9em;
+}
+.markdown th,
+.markdown td {
+  border: 1px solid var(--border);
+  padding: 0.3rem 0.5rem;
+  text-align: left;
+}
+.markdown th {
+  background: var(--surface-muted);
+  font-weight: 600;
+}
+.markdown hr {
+  margin: 0.875rem 0;
+  border: 0;
+  border-top: 1px solid var(--border);
+}
+.markdown input[type="checkbox"] {
+  accent-color: var(--accent);
+}
+.markdown del {
+  opacity: 0.7;
+}
+
+/*
+ * Custom scrollbar — one consistent, token-driven look for the page and every
+ * scrollable panel (modals, drawers, chat, heatmap). Colors come from the theme
+ * variables above, so the same rules work in light and dark. The WebKit thumb
+ * uses a transparent border + background-clip to create an inset, pill-shaped
+ * bar; Firefox gets the equivalent via scrollbar-width/color.
+ */
+@layer base {
+  /* Firefox: standard properties. Scoped here because Chromium 121+ treats
+     scrollbar-color as authoritative and would override the WebKit rules. */
+  @supports not selector(::-webkit-scrollbar) {
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: var(--border-strong) transparent;
+    }
+  }
+
+  /* Chromium / Safari / WebKit */
+  *::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  *::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  *::-webkit-scrollbar-thumb {
+    background-color: var(--border-strong);
+    background-clip: content-box;
+    border: 2px solid transparent;
+    border-radius: 9999px;
+  }
+  *::-webkit-scrollbar-thumb:hover {
+    background-color: var(--accent);
+  }
+  *::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+}
+
+/* Respect users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
