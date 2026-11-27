@@ -1,4 +1,6 @@
-<h1 align="center" style="display:flex; align-items: center; justify-content: center;"><img src="public/pwa.png" alt="Learnary Logo" width="50"> Learnary</h1>
+<a style="color:inherit;" href="https://learnary.zya.me" target="_blank" >
+<h1 align="center" style="display:flex; align-items: center; justify-content: center; padding-right:10px;"><img src="public/pwa.png" alt="Learnary Logo" width="50">Learnary</h1>
+</a>
 
 <p style="color:#c25e32;" align="center">Track your learning. One task at a time.</p>
 
